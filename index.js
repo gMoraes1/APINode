@@ -47,6 +47,19 @@ app.get('/person', async (req, res) => {
 }
 )
 
+//read by id
+app.get('/person/:id', async (req, res) => {
+    const {id} = req.params
+    try{
+        const person = await Person.findById(id)
+        res.status(200).json(person)
+    }
+    catch(err){
+        res.status(400).send({message: 'Erro ao buscar pessoa'})
+    }
+}
+)
+
 //update
 app.put('/person/:id', async (req, res) => {
     const {name, age, approved} = req.body
@@ -57,6 +70,19 @@ app.put('/person/:id', async (req, res) => {
     }
     catch(err){
         res.status(400).send({message: 'Erro ao atualizar pessoa'})
+    }
+}
+)
+
+//delete
+app.delete('/person/:id', async (req, res) => {
+    const {id} = req.params
+    try{
+        await Person.findByIdAndDelete(id)
+        res.status(200).send({message: 'Pessoa deletada com sucesso'})
+    }
+    catch(err){
+        res.status(400).send({message: 'Erro ao deletar pessoa'})
     }
 }
 )
